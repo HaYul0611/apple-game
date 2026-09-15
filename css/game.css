@@ -1,0 +1,406 @@
+/* ==========================================================================
+   Screen 2: Gameplay Screen & HUD
+   ========================================================================== */
+.game-hud {
+  background: linear-gradient(180deg, #43a047 0%, #2e7d32 100%);
+  color: #fff;
+  padding: clamp(4px, 0.8vh, 8px) clamp(8px, 1.2vw, 14px);
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1vw, 10px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.hud-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+}
+
+.hud-lbl {
+  font-size: 10px;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.hud-val {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(20px, 2.8vh, 26px);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.hud-val.bump {
+  animation: scoreBump 0.22s ease;
+}
+
+@keyframes scoreBump {
+  50% {
+    transform: scale(1.35);
+    color: #ffeb3b;
+  }
+}
+
+.hud-timer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timer-top-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+}
+
+.hud-level-tag {
+  background: rgba(0, 0, 0, 0.24);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.hud-combo {
+  background: #ff9800;
+  color: #fff;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 11.5px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  animation: comboPulse 0.4s ease infinite alternate;
+}
+
+@keyframes comboPulse {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.12);
+  }
+}
+
+.timer-sec {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 14.5px;
+}
+
+.timer-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: #fff;
+  border-radius: 5px;
+  width: 100%;
+  transition: width 0.2s linear;
+}
+
+.timer-bar.warn {
+  background: #ffca28;
+}
+
+.timer-bar.danger {
+  background: #ef5350;
+  animation: timerPulse 0.5s ease infinite;
+}
+
+@keyframes timerPulse {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.btn-menu {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  font-size: 17px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.btn-menu:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Grid Container & Apple Cells (여백 공간 확장 및 드래그 영역 무잘림)
+   -------------------------------------------------------------------------- */
+.grid-container {
+  flex: 1;
+  background: #fffdf7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: clamp(8px, 1.2vh, 16px) clamp(10px, 1.6vw, 20px);
+  /* 사과 주변 여백: 드래그 시작/종료 여유를 시각적으로 인지 가능하게 확보 */
+  overflow: visible;
+  cursor: crosshair;
+  perspective: 900px;
+  min-height: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  grid-template-rows: repeat(var(--rows), var(--cell));
+  gap: var(--gap);
+  touch-action: none;
+  position: relative;
+  z-index: 2;
+  transform-style: preserve-3d;
+}
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  transition: transform 0.08s ease, filter 0.08s ease;
+}
+
+.cell.empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cell.selected {
+  transform: scale(1.14);
+  z-index: 5;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.28)) brightness(1.12);
+}
+
+/* ==========================================================================
+   자연스럽고 생동감 넘치는 사과 합 10 소멸 애니메이션 (Juicy Dynamic Pop)
+   ========================================================================== */
+.cell.removing {
+  position: relative;
+  z-index: 45 !important;
+  pointer-events: none;
+  transition: none !important;
+  animation: appleDynamicPopOdd 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+  will-change: transform, filter, opacity;
+}
+
+.cell.removing:nth-child(even) {
+  animation-name: appleDynamicPopEven !important;
+}
+
+/* 홀수 사과: 좌측 상단으로 경쾌하게 솟구쳤다가 회전하며 역동적으로 낙하 소멸 */
+@keyframes appleDynamicPopOdd {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0) rotate(0deg);
+    filter: brightness(1);
+    opacity: 1;
+  }
+
+  18% {
+    /* 1단계: 스쿼시 & 탄성 에너지 축적 */
+    transform: scale(1.22, 0.88) translate3d(-2px, 3px, 12px) rotate(-4deg);
+    filter: brightness(1.5) drop-shadow(0 0 14px rgba(255, 215, 0, 0.95));
+    opacity: 1;
+  }
+
+  44% {
+    /* 2단계: 경쾌한 스프링 솟구침 (Spring Jump) */
+    transform: scale(1.34, 1.26) translate3d(-12px, -24px, 45px) rotate(-14deg);
+    filter: brightness(1.45) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 18px #ffd700);
+    opacity: 1;
+  }
+
+  70% {
+    /* 3단계: 정점 체공 후 반대쪽으로 살짝 흔들리며 하강 궤적 진입 */
+    transform: scale(1.12) translate3d(-16px, -10px, 20px) rotate(-6deg);
+    filter: brightness(1.2) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+    opacity: 0.95;
+  }
+
+  100% {
+    /* 4단계: 중력에 의해 자연스럽게 아래로 떨어지며 부드러운 소멸 */
+    transform: scale(0.3) translate3d(-20px, 44px, -25px) rotate(22deg);
+    filter: brightness(0.8);
+    opacity: 0;
+  }
+}
+
+/* 짝수 사과: 우측 상단으로 경쾌하게 솟구쳤다가 회전하며 역동적으로 낙하 소멸 */
+@keyframes appleDynamicPopEven {
+  0% {
+    transform: scale(1) translate3d(0, 0, 0) rotate(0deg);
+    filter: brightness(1);
+    opacity: 1;
+  }
+
+  18% {
+    /* 1단계: 스쿼시 & 탄성 에너지 축적 */
+    transform: scale(1.22, 0.88) translate3d(2px, 3px, 12px) rotate(4deg);
+    filter: brightness(1.5) drop-shadow(0 0 14px rgba(255, 215, 0, 0.95));
+    opacity: 1;
+  }
+
+  44% {
+    /* 2단계: 경쾌한 스프링 솟구침 */
+    transform: scale(1.34, 1.26) translate3d(12px, -24px, 45px) rotate(14deg);
+    filter: brightness(1.45) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 18px #ffd700);
+    opacity: 1;
+  }
+
+  70% {
+    /* 3단계: 정점 체공 후 반대쪽으로 살짝 흔들리며 하강 */
+    transform: scale(1.12) translate3d(16px, -10px, 20px) rotate(6deg);
+    filter: brightness(1.2) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.25));
+    opacity: 0.95;
+  }
+
+  100% {
+    /* 4단계: 자연스러운 낙하 소멸 */
+    transform: scale(0.3) translate3d(20px, 44px, -25px) rotate(-22deg);
+    filter: brightness(0.8);
+    opacity: 0;
+  }
+}
+
+@keyframes applePopFall {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  32% {
+    /* 위로 솟구치며 살짝 팽창 */
+    transform: translateY(-16px) scale(1.16);
+    opacity: 1;
+    filter: brightness(1.35) drop-shadow(0 6px 12px rgba(255, 215, 0, 0.45));
+  }
+
+  100% {
+    /* 아래로 뚝 떨어져 사라짐 */
+    transform: translateY(44px) scale(0.6) rotate(16deg);
+    opacity: 0;
+  }
+}
+
+/* Realistic SVG Apple Elements (Fruit Box 정통 사과 형상) */
+.apple-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.18));
+}
+
+.apple-body {
+  transition: fill 0.15s ease;
+}
+
+.apple-stem {
+  fill: #5d4037;
+}
+
+.apple-leaf {
+  fill: #43a047;
+}
+
+.apple-shine {
+  stroke: rgba(255, 255, 255, 0.65);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.apple-num {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  fill: #ffffff;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke fill;
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 2.2px;
+  stroke-linejoin: round;
+  /* 모든 단계에서 숫자는 상시 선명하게 노출 */
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Special Apple Types (기본은 빨간 사과 🍎, 특수 기능 시 황금 사과 ✨ 및 초록 풋사과 🍏) */
+.cell.apple-gold .apple-body {
+  fill: #ffb300 !important;
+  filter: drop-shadow(0 0 6px #ffd54f);
+}
+
+.cell.apple-gold .apple-num {
+  fill: #4a2800 !important;
+  stroke: rgba(255, 255, 255, 0.8) !important;
+  stroke-width: 2px;
+}
+
+.cell.apple-green .apple-body {
+  fill: #66bb6a !important;
+  filter: drop-shadow(0 0 5px #81c784);
+}
+
+/* Selection Box (선명한 외곽선과 여유 있는 z-index) */
+.sel-box {
+  position: absolute;
+  border: 2.5px dashed var(--apple-red);
+  background: rgba(229, 57, 53, 0.08);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.sel-box.valid {
+  border-color: #2e7d32;
+  border-style: solid;
+  background: rgba(46, 125, 50, 0.16);
+}
+
+.sel-box.over {
+  border-color: #9e9e9e;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* Sum Bubble (말풍선 잘림 방지 위치 조정) */
+.sum-bub {
+  position: absolute;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  background: #fff;
+  border: 2.5px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 30;
+  transform: translate(-50%, -115%);
+}
+
+.sum-bub.valid {
+  border-color: #2e7d32;
+  color: #2e7d32;
+}
+
+.sum-bub.over {
+  border-color: var(--apple-red);
+  color: var(--apple-red);
+}

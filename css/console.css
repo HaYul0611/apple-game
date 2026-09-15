@@ -1,0 +1,437 @@
+/* ==========================================================================
+   Nintendo Console Wrapper & Housing (뷰포트 맞춤 시원한 확장)
+   ========================================================================== */
+.console-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+  margin: auto;
+}
+
+.nintendo-console {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background: transparent;
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.6));
+  position: relative;
+  max-width: 100%;
+  max-height: 96vh;
+}
+
+/* --------------------------------------------------------------------------
+   Joy-Cons (Left: Neon Blue, Right: Neon Red — 닌텐도 정품 실물 비율)
+   -------------------------------------------------------------------------- */
+.joycon {
+  width: clamp(76px, 8.6vw, 115px);
+  min-width: 76px;
+  background: var(--joy-blue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(8px, 1.6vh, 22px) 4px clamp(10px, 1.8vh, 22px);
+  position: relative;
+  box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.4), inset 0 -4px 6px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.joycon-left {
+  background: linear-gradient(135deg, var(--joy-blue) 0%, var(--joy-blue-dark) 100%);
+  border-radius: 46px 0 0 46px;
+  border-right: 2px solid #111;
+}
+
+.joycon-right {
+  background: linear-gradient(135deg, var(--joy-red) 0%, var(--joy-red-dark) 100%);
+  border-radius: 0 46px 46px 0;
+  border-left: 2px solid #111;
+}
+
+/* Shoulder Buttons (L / ZL, R / ZR) */
+.shoulder-btn {
+  position: absolute;
+  top: -12px;
+  background: #2b2e35;
+  color: #9aa1b2;
+  font-size: 11.5px;
+  font-weight: 900;
+  padding: 3px 12px;
+  border-radius: 6px 6px 2px 2px;
+  border: 1.5px solid #1a1c22;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.btn-l {
+  left: 16px;
+}
+
+.btn-zl {
+  left: 56px;
+}
+
+.btn-r {
+  right: 16px;
+}
+
+.btn-zr {
+  right: 56px;
+}
+
+.joycon-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
+  gap: clamp(8px, 1.5vh, 18px);
+}
+
+/* Analog Sticks (실제 닌텐도 썸스틱 디테일 및 넉넉한 직경) */
+.analog-stick {
+  width: clamp(48px, 5.2vh, 64px);
+  height: clamp(48px, 5.2vh, 64px);
+  background: #181a21;
+  border-radius: 50%;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.85), 0 4px 8px rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2.5px solid #282b35;
+  position: relative;
+  transition: transform 0.08s ease;
+  flex-shrink: 0;
+}
+
+.analog-stick:hover {
+  transform: scale(1.03);
+}
+
+.analog-stick:active {
+  transform: scale(0.96);
+}
+
+.stick-nub {
+  width: clamp(34px, 3.8vh, 46px);
+  height: clamp(34px, 3.8vh, 46px);
+  background: radial-gradient(circle at 35% 35%, #444957 0%, #22252d 75%, #15171d 100%);
+  border-radius: 50%;
+  border: 2px solid #545a6c;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.15), 0 3px 5px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* 스틱 썸그립 4방향 엠보싱 노치 */
+.stick-nub::before,
+.stick-nub::after {
+  content: '';
+  position: absolute;
+  background: #5a6072;
+  opacity: 0.55;
+}
+
+.stick-nub::before {
+  top: 50%;
+  left: 6px;
+  right: 6px;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+
+.stick-nub::after {
+  left: 50%;
+  top: 6px;
+  bottom: 6px;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+
+/* D-Pad on Left Joy-Con (닌텐도 스위치 좌측 전용 4개 원형 방향키) */
+.d-pad {
+  display: grid;
+  grid-template-columns: repeat(3, clamp(18px, 2.1vh, 23px));
+  grid-template-rows: repeat(3, clamp(18px, 2.1vh, 23px));
+  gap: 2.5px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.d-btn {
+  width: 100%;
+  height: 100%;
+  background: #23262f;
+  color: #8c96a8;
+  border: 1.5px solid #16181e;
+  font-size: clamp(10px, 1.2vh, 13px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.15);
+  transition: transform 0.05s ease, background 0.1s ease, color 0.1s ease;
+}
+
+.d-btn:active,
+.d-btn:hover {
+  background: #3c4250;
+  color: #ffffff;
+  transform: scale(0.94);
+}
+
+.d-up {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.d-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.d-center {
+  grid-column: 2;
+  grid-row: 2;
+  background: transparent;
+  border: none;
+}
+
+.d-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.d-down {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* Action Buttons (X, Y, A, B) on Right Joy-Con (선명한 색상 및 넉넉한 버튼 직경) */
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, clamp(20px, 2.3vh, 25px));
+  grid-template-rows: repeat(3, clamp(20px, 2.3vh, 25px));
+  gap: 2.5px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  width: 100%;
+  height: 100%;
+  background: #23262f;
+  color: #f1f5f9;
+  border: 1.5px solid #16181e;
+  border-radius: 50%;
+  font-family: 'Fredoka', 'Noto Sans KR', sans-serif;
+  font-size: clamp(11px, 1.3vh, 13px);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), inset 0 1px 1.5px rgba(255, 255, 255, 0.15);
+  transition: transform 0.05s ease, background 0.1s ease;
+}
+
+.action-btn:active,
+.action-btn:hover {
+  background: #3c4250;
+  color: #fff;
+  transform: scale(0.94);
+}
+
+.btn-x {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.btn-y {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.btn-a {
+  grid-column: 3;
+  grid-row: 2;
+  color: #34d399;
+}
+
+.btn-b {
+  grid-column: 2;
+  grid-row: 3;
+  color: #ff4d4f;
+}
+
+/* System Buttons (+, -, Capture, Home) */
+.btn-system {
+  background: #23262f;
+  color: #9aa1b2;
+  border: 1.5px solid #16181e;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, transform 0.05s;
+}
+
+.btn-system:hover {
+  background: #3c4250;
+  color: #fff;
+}
+
+.btn-system:active {
+  transform: scale(0.94);
+}
+
+.btn-minus {
+  width: clamp(28px, 3.0vh, 34px);
+  height: clamp(28px, 3.0vh, 34px);
+  border-radius: 6px;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.btn-plus {
+  width: clamp(28px, 3.0vh, 34px);
+  height: clamp(28px, 3.0vh, 34px);
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.btn-capture {
+  width: clamp(26px, 2.8vh, 32px);
+  height: clamp(26px, 2.8vh, 32px);
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.btn-home {
+  width: clamp(28px, 3.0vh, 34px);
+  height: clamp(28px, 3.0vh, 34px);
+  border-radius: 50%;
+  font-size: 15px;
+  position: relative;
+  box-shadow: 0 0 0 2px #3c4250, 0 3px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   Console Body (Center Screen Unit — 확장된 너비)
+   -------------------------------------------------------------------------- */
+.console-body {
+  background: var(--console-body);
+  border-top: 3px solid #343846;
+  border-bottom: 4px solid #14161b;
+  padding: clamp(5px, 0.9vh, 9px) clamp(10px, 1.6vw, 18px) clamp(6px, 1.1vh, 12px);
+  display: flex;
+  flex-direction: column;
+  width: clamp(460px, 54vw, 740px);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), inset 0 -3px 6px rgba(0, 0, 0, 0.5);
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* Console Bezel Top */
+.console-bezel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px 7px;
+  color: #8b92a4;
+}
+
+.console-brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Fredoka', sans-serif;
+  letter-spacing: 1.5px;
+}
+
+.brand-nintendo {
+  font-size: 12px;
+  font-weight: 700;
+  color: #aeb6c7;
+}
+
+.brand-game {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--joy-red);
+}
+
+.power-status {
+  display: flex;
+  align-items: center;
+}
+
+.power-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333;
+}
+
+.power-led.active {
+  background: #00e676;
+  box-shadow: 0 0 9px #00e676;
+}
+
+.speaker-grill {
+  display: flex;
+  gap: 3px;
+}
+
+.speaker-grill span {
+  width: 3px;
+  height: 9px;
+  background: #14161b;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Console Screen Display Area
+   -------------------------------------------------------------------------- */
+.console-screen {
+  background: var(--screen-bg);
+  border-radius: var(--radius-sm);
+  border: 4px solid var(--console-bezel);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
+  position: relative;
+  height: clamp(500px, 82vh, 760px);
+  max-height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
+}
+

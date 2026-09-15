@@ -1,0 +1,70 @@
+/* ==========================================================================
+   Apple 10 — 닌텐도 에디션 사과게임 스타일시트
+   - 닌텐도 하드웨어 콘솔 프레임 (네온 블루 / 네온 레드 조이콘)
+   - 실물 사과 형상화 (SVG 베지에 곡선)
+   - 1~10단계 시각 피드백 & 순수 실시간 명예의 전당 UI
+   - 1366x768 & 1920x1080 시원한 화면 확장 및 무잘림·무넘침 완벽 대응
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --cols: 10;
+  --rows: 12;
+  --cell: clamp(32px, 5.2vh, 50px);
+  --gap: clamp(2px, 0.35vh, 4px);
+
+  /* Nintendo Console Palette */
+  --joy-blue: #00c3e3;
+  --joy-blue-dark: #009cb6;
+  --joy-red: #ff3c57;
+  --joy-red-dark: #d8233d;
+  --console-body: #23262e;
+  --console-bezel: #16181d;
+  --screen-bg: #f8f6f0;
+
+  /* Accent & Apple Palette */
+  --apple-red: #e53935;
+  --apple-gold: #ffb300;
+  --apple-ice: #29b6f6;
+  --game-green: #43a047;
+  --game-green-dark: #2e7d32;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: radial-gradient(circle at center, #2e3440 0%, #15171d 100%);
+  color: #212529;
+  font-family: 'Noto Sans KR', sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  position: relative;
+  overflow: auto;
+  /* 브라우저 확대 시 전체 콘솔을 스크롤하여 접근 가능 */
+  scrollbar-width: thin;
+  scrollbar-color: #555 #222;
+}
