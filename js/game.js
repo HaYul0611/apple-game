@@ -799,8 +799,13 @@
       D.sumBub.hidden = false;
       D.sumBub.innerHTML = bubbleText;
       D.sumBub.style.left = (left + width / 2) + 'px';
-      var safeTop = Math.max(10, top - 10);
-      D.sumBub.style.top = safeTop + 'px';
+      if (top < 46) {
+        D.sumBub.style.top = (top + height + 10) + 'px';
+        D.sumBub.style.transform = 'translate(-50%, 0)';
+      } else {
+        D.sumBub.style.top = (top - 8) + 'px';
+        D.sumBub.style.transform = 'translate(-50%, -100%)';
+      }
       D.sumBub.className = 'sum-bub';
       if (sum === TARGET) D.sumBub.classList.add('valid');
       else if (sum > TARGET) D.sumBub.classList.add('over');
