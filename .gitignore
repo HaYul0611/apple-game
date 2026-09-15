@@ -1,0 +1,14 @@
+# 제출 평가 규칙 및 제출서 파일 (깃 저장소 제외)
+rules.txt
+SUBMISSION.md
+
+# 개발 임시 폴더 및 스크립트
+scratch/
+.system_generated/
+*.tmp
+*.log
+*.zip
+
+# OS 생성 파일
+.DS_Store
+Thumbs.db
