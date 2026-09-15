@@ -542,6 +542,10 @@
   }
 
   function showScreen(name) {
+    closeAllCustomSelects();
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
     D.startScreen.classList.remove('active');
     D.gameScreen.classList.remove('active');
     D.menuOv.hidden = true;
@@ -1062,9 +1066,14 @@
   }
 
   function openLeaderboard() {
+    closeAllCustomSelects();
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
     D.rankOv.hidden = false;
     var localRanks = loadRankings();
     renderRankTable(localRanks);
+    if (D.closeRankBtn) D.closeRankBtn.focus();
 
     // 다른 PC 동기화 시도 (키리스 공용 카운터/저장소 연동)
     try {
@@ -1112,7 +1121,12 @@
 
   function openConfirmModal(onOk) {
     if (!D.confirmOv) return;
+    closeAllCustomSelects();
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
     D.confirmOv.hidden = false;
+    if (D.confirmCancelBtn) D.confirmCancelBtn.focus();
     D.confirmOkBtn.onclick = function () {
       D.confirmOv.hidden = true;
       if (typeof onOk === 'function') onOk();
