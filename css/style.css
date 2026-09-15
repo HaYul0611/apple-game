@@ -89,6 +89,7 @@ body {
   filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.6));
   position: relative;
   max-width: 100%;
+  max-height: 96vh;
 }
 
 /* --------------------------------------------------------------------------
@@ -398,12 +399,14 @@ body {
   background: var(--console-body);
   border-top: 3px solid #343846;
   border-bottom: 4px solid #14161b;
-  padding: clamp(5px, 1vh, 8px) clamp(8px, 1.4vw, 16px) clamp(8px, 1.4vh, 14px);
+  padding: clamp(4px, 0.8vh, 8px) clamp(8px, 1.4vw, 16px) clamp(6px, 1vh, 12px);
   display: flex;
   flex-direction: column;
-  width: clamp(380px, 50vw, 680px);
+  width: clamp(340px, 48vw, 680px);
   box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08), inset 0 -3px 6px rgba(0, 0, 0, 0.5);
   min-width: 0;
+  min-height: 0;
+  max-height: 100%;
 }
 
 /* Console Bezel Top */
@@ -473,7 +476,9 @@ body {
   border: 4px solid var(--console-bezel);
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.45);
   position: relative;
-  height: clamp(400px, 76vh, 720px);
+  height: clamp(320px, 74vh, 720px);
+  max-height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -484,11 +489,16 @@ body {
   width: 100%;
   height: 100%;
   position: relative;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .screen.active {
   display: flex;
   flex-direction: column;
+  min-height: 0;
+  max-height: 100%;
 }
 
 /* ==========================================================================
@@ -496,25 +506,27 @@ body {
    ========================================================================== */
 .start-hero {
   background: linear-gradient(135deg, #66bb6a 0%, #388e3c 100%);
-  padding: clamp(14px, 2.5vh, 22px) 16px;
+  padding: clamp(8px, 1.8vh, 18px) 14px;
   text-align: center;
   position: relative;
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
 }
 
 .logo {
   font-family: 'Fredoka', sans-serif;
-  font-size: clamp(34px, 4.5vh, 46px);
+  font-size: clamp(26px, 3.8vh, 44px);
   font-weight: 700;
   color: #fff;
   text-shadow: 2px 3px 0 rgba(0, 0, 0, 0.2);
   position: relative;
   z-index: 2;
+  line-height: 1.1;
 }
 
 .logo-sub {
-  font-size: clamp(12px, 1.6vh, 15px);
+  font-size: clamp(11px, 1.4vh, 14px);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   position: relative;
@@ -530,13 +542,15 @@ body {
 }
 
 .start-body {
-  padding: clamp(6px, 1.2vh, 14px) clamp(10px, 1.8vw, 18px);
+  padding: clamp(4px, 1vh, 12px) clamp(8px, 1.6vw, 16px);
   flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: clamp(5px, 1vh, 8px);
+  justify-content: flex-start;
+  gap: clamp(4px, 0.8vh, 8px);
   overflow-y: auto;
+  overflow-x: hidden;
   /* 확대 또는 작은 화면 시 내부 스크롤로 모든 버튼 온전하게 접근 */
   scrollbar-width: thin;
   scrollbar-color: #d1c7b7 transparent;
@@ -911,22 +925,23 @@ body {
 .start-actions {
   display: flex;
   flex-direction: column;
-  gap: clamp(5px, 1vh, 8px);
+  gap: clamp(4px, 0.7vh, 8px);
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: auto;
+  padding-top: 4px;
 }
 
 .btn-start {
   width: 100%;
-  padding: clamp(9px, 1.4vh, 14px);
+  padding: clamp(7px, 1.2vh, 12px);
   background: linear-gradient(180deg, #ef5350 0%, #c62828 100%);
   color: #fff;
   border: none;
   border-radius: var(--radius-sm);
   font-family: 'Fredoka', sans-serif;
-  font-size: clamp(14px, 1.8vh, 18px);
+  font-size: clamp(13px, 1.6vh, 17px);
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   cursor: pointer;
   box-shadow: 0 3px 8px rgba(198, 40, 40, 0.35);
   transition: transform 0.08s ease, filter 0.1s ease;
@@ -943,12 +958,12 @@ body {
 .btn-ghost-rank,
 .btn-ghost {
   width: 100%;
-  padding: clamp(6px, 1.1vh, 9px) 12px;
+  padding: clamp(5px, 0.9vh, 8px) 12px;
   background: #fff;
   color: #444;
   border: 1px solid #d4cdc0;
   border-radius: var(--radius-sm);
-  font-size: clamp(11.5px, 1.3vh, 13px);
+  font-size: clamp(11px, 1.2vh, 12.5px);
   font-weight: 700;
   cursor: pointer;
   transition: background 0.1s, border-color 0.1s;
@@ -2092,14 +2107,14 @@ body {
   }
 
   .btn-start {
-    padding: 9px;
-    font-size: 14px;
+    padding: 6px 10px;
+    font-size: 13px;
     letter-spacing: 1px;
   }
 
   .btn-ghost-rank {
-    padding: 6px;
-    font-size: 11.5px;
+    padding: 4px 8px;
+    font-size: 11px;
   }
 
   .game-hud {
@@ -2190,13 +2205,13 @@ body {
   }
 
   .btn-start {
-    padding: 7px;
-    font-size: 13px;
+    padding: 5px 8px;
+    font-size: 12px;
   }
 
   .btn-ghost-rank {
-    padding: 5px;
-    font-size: 11px;
+    padding: 3px 6px;
+    font-size: 10.5px;
   }
 
   .ov-card {
